@@ -1,5 +1,9 @@
 const {Schema, model} = require("mongoose");
 
+function toLower(val) {
+  return val.toLowerCase();
+}
+
 const userSchema = new Schema({
     username: {
         type: String,
