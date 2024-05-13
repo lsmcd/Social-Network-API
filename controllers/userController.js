@@ -67,4 +67,30 @@ async function deleteUser(req, res){
     } catch (err) {console.log(err)}
 }
 
-module.exports = {getAllUsers, getUser, postUser, putUser, deleteUser}
+async function postFriend(req, res){
+    try {
+        let error; 
+        let user = await User.findOne({_id: req.params.userId}).catch((err) => error = err);
+        user.friends[user.friends.length] = (req.params.friendId.trim());
+        user.save()
+        if (!error){
+            res.status(200).json("Successfully posted");
+        } else {
+            res.status(400).json(error)
+        }
+    } catch (err) {console.log(err)}
+}
+
+async function deleteFriend(req, res){
+    try {
+        let error; 
+        let user = await User.findOneAndUpdate({_id: req.params.userId},{ $pullAll: {friends: [req.params.friendId]}});
+        if (!error){
+            res.status(200).json("Successfully deleted");
+        } else {
+            res.status(400).json(error)
+        }
+    } catch (err) {console.log(err)}
+}
+
+module.exports = {getAllUsers, getUser, postUser, putUser, deleteUser, postFriend, deleteFriend}
