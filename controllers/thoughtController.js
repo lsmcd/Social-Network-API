@@ -18,7 +18,7 @@ async function getThought(req, res){
 async function postThought(req, res){
     try {
         let error; 
-        let thought = await new Thought.create(req.body).catch((err) => error = err);
+        let thought = await Thought.create(req.body).catch((err) => error = err);
         let user = await User.findOne({username: req.body.username});
         user.thoughts[user.thoughts.length] = thought._id;
         user.save();
